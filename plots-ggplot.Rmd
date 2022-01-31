@@ -48,4 +48,65 @@ gg_base + geom_point(aes(size = visitors,color = visitors),alpha = 0.5)
 #Now for my own attempt at a filled column chart of Channel Islands visitor data using aes with fill.
 gg_base+geom_col(aes(fill=visitors))
 ```
+```{r}
+#obviously R is very customizable, so to save time changing every little thing, there are themes you can use.
+gg_base +  
+  geom_point(aes
+             (size = visitors,
+               color = visitors),
+             alpha = 0.5
+             ) + theme_bw()
+#for this customization part, google is a good resource. I feel like as I get more comfortable in R, I'll establish my graphing style- especially to keep things consistent in presentations/papers. All the customization I can copy and paste from one set chunk using different data. Very neat info!
+```
+```{r}
+#Changing Axes and adding title using labs()
+#I realized that keeping code like this below is better than just lines. It's easier to see each part (and comment out) and also easier to find errors in I would presume.
+gg_base +
+  geom_line(linetype = "dotted") +
+  theme_bw() +
+  labs(
+    x = "Year",
+    y = "Annual park visitors",
+    title = "Channel Islands NP Visitation",
+    subtitle = "(1963 - 2016)"
+  )
+#scales() will help change the format of axes, for example from scientific to comma formatted numbers
+```
+```{r}
+#You can combine compatible graphs of the same series, just customize each in their own line.
+gg_base +
+  geom_line(color = "purple") +
+  geom_point(color = "orange",
+             aes(size = year),
+             alpha = 0.5)
+#You can also combine multiple plots of different series.
+ggplot(data = ca_np, aes(x = year, y = visitors)) +
+  geom_line()
+#this graphs all data of a spreadsheet, but you can separate it out using the argument group= *insert column title*
+ggplot(
+  data = ca_np, 
+  aes(x = year, 
+      y = visitors, 
+      group = park_name)
+  ) +
+  geom_line()
+```
+```{r}
+#The above graph is a little messy, so we can split it into different facets using "facet_wrap()", graphs together using the same data file but different series. -easier to compare
+#First we save the x and y's to save us some time
+gg_np <- ggplot(data = ca_np, 
+                aes(x = year, 
+                    y = visitors, 
+                    group = park_name)
+                )
+gg_np +
+  geom_line(show.legend = FALSE) +
+  theme_light() + 
+  labs(x = "year", y = "annual visitors") +
+  facet_wrap(~ park_name)
+```
+```{r}
+#See can save our figures:
+ggsave(here("figures", "np_graph.jpg"), dpi = 180, width = 8, height = 7)
+```
 
