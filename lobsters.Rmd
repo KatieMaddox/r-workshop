@@ -1,0 +1,32 @@
+---
+title: "pivot_lobsters.Rmd"
+author: "Katie Maddox"
+date: "1/30/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+## attach libraries
+library(tidyverse)
+library(readxl)
+library(here) #install.packages('skimr')
+library(skimr)
+library(kableExtra)  #install.packages('kableExtra')
+```
+```{r}
+## read in data
+lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip=4)
+# explore data
+skimr::skim(lobsters) 
+#you get the same thing if you exclude "skimr::". It is simply an annotation to show where skim() is from.
+```
+```{r}
+#Now we take our data, group by year and summarize by count.
+lobsters %>%
+  group_by(year) %>%
+  summarize(count_by_year = n())
+#our own lil pivot table!
+```
+
+
