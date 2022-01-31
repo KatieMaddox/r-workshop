@@ -29,4 +29,54 @@ lobsters %>%
 #our own lil pivot table!
 ```
 
+```{r}
+#group by multiple variables
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(),
+            mean_size_mm = mean(size_mm))
+#if we have NA in our data, it can cuase the summary in our pivot table to be NA, so we can have R ignore those NAs using na.rm(TRUE)
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            mean_size_mm = mean(size_mm, na.rm=TRUE), 
+            sd_size_mm = sd(size_mm, na.rm=TRUE))
+#now we're saving the pivot table as a variable so we can utilize it later
+siteyear_summary <- lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            mean_size_mm = mean(size_mm, na.rm = TRUE), 
+            sd_size_mm = sd(size_mm, na.rm = TRUE))
+#let's make a table with that new variable
+siteyear_summary %>%
+  kable()
+#beautiful
+```
+```{r}
+#ACTIVITY, my turn here we go...
+
+#Build from our analysis and calculate the median lobster size for each site year. Your calculation will use the size_mm variable and function to calculate the median (Hint: ?median)
+#2create and ggsave() a plot.
+activity_summary <- lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            median_size_mm = median(size_mm, na.rm = TRUE),
+  )
+#calculated median size, grouped by site and year
+activity_summary %>%
+  kable()
+#shows me summary of my pivot table
+```
+```{r}
+ggplot(data = activity_summary, aes(x=year, y=median_size_mm, color=site)) +geom_line() + theme_minimal() +
+  labs(
+    x = "Year",
+    y = "Median",
+    title = "Median Lobster Size by Site",
+    subtitle = "(2012 - 2016)")
+```
+```{r}
+#save it
+ggsave(here("figures", "lobsters-line.png"))
+```
 
