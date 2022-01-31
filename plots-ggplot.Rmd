@@ -7,24 +7,45 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(here)
 ```
 
-## R Markdown
+```{r}
+ca_np <- read_csv(here("data", "ca_np.csv"))
+ci_np <- read_excel(here("data", "ci_np.xlsx"))
+#read in two data files, here tells R where to look
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line()
+#creates line graph from ci_np dataframe
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+gg_base <- ggplot(data = ci_np, aes(x = year, y = visitors))
+#saves our x and y variables so we can easily manipulate and insert other types of graphs without repeating the line of code, now gg_base is in our environment
 
-```{r cars}
-summary(cars)
+gg_base + geom_point()
+#takes pre-set x and y values and creates a scatterplot
+
+gg_base + geom_col()
+#same as above but now a column graph/bar chart
+
+gg_base +  geom_area()
+#area plot
+```
+```{r}
+#Now on to customization of our base graphs. Customizations go in the () that follow the type of graph we want.
+gg_base + geom_point(color="darkolivegreen4", pch=7, size=4, alpha=0.5)
+#anotha one!
+gg_base + geom_line(color="red", linetype="dashed")
+```
+```{r}
+#Now using "aes," the aesthetics command, we can have our customizations dependent on the value of a variable to show contrast.
+gg_base + geom_point(aes(size = visitors,color = visitors),alpha = 0.5)
+#so the line above, the aes changes the size and color of points based upon the # of visitors (which was previously defined into gg_base). Having both color AND size change is overkill but just for learning's sake. Alpha is the same for all points because it's outside of 'aes'.
+```
+```{r}
+#Now for my own attempt at a filled column chart of Channel Islands visitor data using aes with fill.
+gg_base+geom_col(aes(fill=visitors))
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
