@@ -79,4 +79,24 @@ ggplot(data = activity_summary, aes(x=year, y=median_size_mm, color=site)) +geom
 #save it
 ggsave(here("figures", "lobsters-line.png"))
 ```
+```{r}
+#can also use a count function
+lobsters %>%
+  count(site, year)
+#using Mutate, we can add a column to a dataset, like calculating meters from milimeters
+lobsters %>%
+  mutate(size_m = size_mm / 1000)
+#we can see the calculated column has been added to the right side of our rectangle of data
+
+#in the chunk below, we added two columns with set values (millenia and observer) and created a new dataset kinda
+lobsters_detailed <- lobsters %>%
+  mutate(size_m = size_mm / 1000, 
+         millenia = 2000,
+         observer = "Allison Horst")
+```
+```{r}
+#sometimes we only want to present datasets with some of the data, we can do this using the select() function
+lobsters_detailed %>%
+  select(date, site, size_m)
+```
 
