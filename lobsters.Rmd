@@ -10,8 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## attach libraries
 library(tidyverse)
 library(readxl)
-library(here) #install.packages('skimr')
-library(skimr)
+library(here) 
+library(skimr) #install.packages('skimr')
 library(kableExtra)  #install.packages('kableExtra')
 ```
 ```{r}

@@ -55,7 +55,7 @@ gg_base +
              (size = visitors,
                color = visitors),
              alpha = 0.5
-             ) + theme_bw()
+             ) + theme_minimal()
 #for this customization part, google is a good resource. I feel like as I get more comfortable in R, I'll establish my graphing style- especially to keep things consistent in presentations/papers. All the customization I can copy and paste from one set chunk using different data. Very neat info!
 ```
 ```{r}
