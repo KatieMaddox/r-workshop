@@ -77,7 +77,7 @@ ggplot(data = activity_summary, aes(x=year, y=median_size_mm, color=site)) +geom
 ```
 ```{r}
 #save it
-ggsave(here("figures", "lobsters-line.png"))
+#ggsave(here("figures", "lobsters-line.png"))
 ```
 ```{r}
 #can also use a count function
